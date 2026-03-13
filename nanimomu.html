@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>MoMu 💙</title>
+
+<style>
+body{
+margin:0;
+font-family:'Segoe UI',sans-serif;
+background:linear-gradient(135deg,#4b0082,#8000ff);
+color:white;
+text-align:center;
+overflow-x:hidden;
+}
+
+.section{display:none;padding-top:60px;}
+.active{display:block;}
+
+h1,h2{color:#00bfff}
+
+button{
+padding:12px 22px;
+border:none;
+border-radius:25px;
+cursor:pointer;
+background:#00bfff;
+color:white;
+font-weight:bold;
+margin:10px;
+}
+
+input,textarea{
+width:80%;
+padding:10px;
+border-radius:15px;
+border:none;
+margin:10px;
+text-align:center;
+}
+
+/* LOGIN BOX */
+.login-box{
+width:320px;
+margin:0 auto;
+padding:30px;
+border-radius:20px;
+background:rgba(255,255,255,0.1);
+box-shadow:0 0 25px #00bfff;
+}
+
+/* GRID */
+.task-grid{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:20px;
+width:90%;
+margin:40px auto;
+}
+
+.task-box{
+background:#00bfff;
+padding:40px 0;
+border-radius:20px;
+font-size:20px;
+font-weight:bold;
+cursor:pointer;
+box-shadow:0 0 20px #00bfff;
+}
+
+/* Mystery */
+.mystery-grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:20px;
+width:80%;
+margin:40px auto;
+}
+
+.mystery-box{
+background:#00bfff;
+padding:40px 0;
+border-radius:20px;
+font-size:30px;
+cursor:pointer;
+}
+
+.opened{background:white;color:#4b0082;font-size:16px;padding:20px}
+
+/* Balloon */
+.balloon,.gift{
+position:absolute;
+font-size:90px;
+animation:floatUp 12s linear infinite;
+cursor:pointer;
+}
+
+@keyframes floatUp{
+from{bottom:-150px}
+to{bottom:110vh}
+}
+
+/* Slideshow */
+#slideImg{width:350px;border-radius:20px;box-shadow:0 0 20px white}
+
+/* Hearts */
+.heart{
+position:fixed;
+bottom:-20px;
+color:#00bfff;
+font-size:20px;
+animation:float 6s linear infinite;
+}
+
+
+
+.candle:nth-child(1){
+left:40%;
+top:-60px;
+}
+
+#cake{
+font-size:200px;
+position:relative;
+}
+
+.candle{
+position:absolute;
+font-size:60px;
+cursor:pointer;
+}
+
+.candle:nth-child(2){
+left:50%;
+top:-70px;
+}
+
+.candle:nth-child(3){
+left:60%;
+top:-60px;
+}
+
+.fly{
+position:fixed;
+bottom:-50px;
+font-size:30px;
+animation:flyUp 5s linear forwards;
+}
+
+@keyframes float{
+0%{transform:translateY(0);opacity:1}
+100%{transform:translateY(-100vh);opacity:0}
+}
+</style>
+</head>
+
+<body>
+
+<!-- HOME MUSIC -->
+<audio id="bgMusic" src="song.m4a" loop></audio>
+
+<!-- HOME -->
+<div id="home" class="section active">
+<h1>MoMu 💙</h1>
+<p>Hey Handsome… Ready for your birthday surprise? 👀</p>
+<button onclick="startApp()">Unlock Surprise 💙</button>
+</div>
+
+<!-- 💜 LOGIN PAGE (NEW) -->
+<div id="login" class="section">
+<div class="login-box">
+<h2>MoMu Login 💜</h2>
+
+<input type="text" id="nickname" placeholder="Enter Nickname"><br>
+<input type="date" id="dob"><br>
+
+<p id="error" style="color:#ffb3ff"></p>
+
+<button onclick="checkLogin()">Special Access 💜</button>
+</div>
+</div>
+
+<!-- TASK PAGE -->
+<div id="tasks" class="section">
+<h2>Till My Last Breath 💙</h2>
+
+<div class="task-grid">
+<div class="task-box" onclick="openTask1()">Heart Test 💌</div>
+<div class="task-box" onclick="show(task2)"> Hidden Love💌</div>
+<div class="task-box" onclick="openTask3()">Love Magic Box🎈</div>
+<div class="task-box" onclick="openVideo()">A Piece Of us 🎬</div>
+<div class="task-box" onclick="show(task5)">My Voice For You 🎤</div>
+<div class="task-box" onclick="openTask6()">Sayings Of My Heart 💯</div>
+<div class="task-box" onclick="show('task7')">Don't Skip this 🎁</div>
+
+
+</div>
+</div>
+
+<!-- TASK1 QUIZ -->
+<div id="task1" class="section">
+<h2>Heart Test 💜</h2>
+<h3 id="qText"></h3>
+<textarea id="qAns"></textarea><br>
+<button onclick="prevQ()">⬅ Back</button>
+<button onclick="nextQ()">Next ➡</button><br>
+<button onclick="show(tasks)">Back to Tasks</button>
+</div>
+
+<!-- TASK2 -->
+<div id="task2" class="section">
+<h2>Hidden Love 💌</h2>
+<div class="mystery-grid" id="grid"></div>
+<button onclick="show(tasks)">Back</button>
+</div>
+
+
+<!-- TASK3 -->
+<div id="task3" class="section">
+<h2>Love magic box 🎈</h2>
+<p id="balloonMsg"></p>
+<button onclick="show(tasks)">Back</button>
+</div>
+
+  <!-- TASK4 -->
+<div id="task4" class="section">
+  <h2>A Piece of Us 🎬</h2>
+
+  <div style="
+      width:70%;
+      max-width:700px;
+      margin:30px auto;
+      background:black;
+      padding:10px;
+      border-radius:20px;
+      box-shadow:0 0 25px #00bfff;
+  ">
+    <video id="video" style="width:100%;border-radius:15px;" controls>
+      <source src="video.mp4" type="video/mp4">
+    </video>
+  </div>
+<button onclick="backToTasks()">⬅ Back to Tasks</button>
+</div>
+
+
+<!-- TASK5 -->
+<div id="task5" class="section">
+<h2>My Voice For You 🎤</h2>
+
+<button onclick="startRec()">Start</button>
+<button onclick="stopRec()">Stop</button>
+
+<br><br>
+
+<audio id="playAudio" controls></audio>
+
+<br><br>
+
+<button onclick="backToTasks6()">⬅ Back to Tasks</button>
+</div>
+
+
+
+<!-- TASK6 -->
+<div id="task6" class="section">
+  <h2>Sayings Of My Heart 💙</h2>
+
+  <!-- Scroll Box -->
+  <div id="heartContainer" style="
+      width:80%;
+      height:50vh;
+      margin:20px auto;
+      background:rgba(255,255,255,0.1);
+      border-radius:20px;
+      padding:20px;
+      overflow-y:auto;
+      box-shadow:0 0 20px #00bfff;
+      text-align:left;
+  ">
+      <div id="lines"></div>
+  </div>
+
+  <button onclick="show('tasks')">⬅ Back to Tasks</button>
+</div>
+
+
+<!-- TASK7 -->
+<div id="task7" class="section">
+<h1>🎁 My Man This For You 🎁</h1>
+<p>Let’s cut this cake and make this moment as sweet as our memories together❤️💞Happy Birthday 💙</p>
+<div id="cakeArea">
+<div id="cake">🎂
+<span class="candle" onclick="blow(1)">🕯️</span>
+<span class="candle" onclick="blow(2)">🕯️</span>
+<span class="candle" onclick="blow(3)">🕯️</span>
+</div>
+</div>
+<h2 id="bdayMsg" style="display:none"></h2>
+<button onclick="show('tasks')">⬅ Back to Tasks</button>
+</div>
+
+<script>
+
+/* START APP → LOGIN */
+function startApp(){
+bgMusic.play()
+show(login)
+}
+
+/* LOGIN CHECK */
+function checkLogin(){
+if(
+nickname.value.trim().toLowerCase()=="mohanraj" &&
+dob.value=="2003-03-15"
+){
+show(tasks)
+}else{
+error.innerHTML="Access Denied 💔"
+}
+}
+
+/* NAV */
+function show(sec){
+document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"))
+sec.classList.add("active")
+}
+
+/* TASK1❤️  */
+const questions=[
+"When did we first meet?","Who fell first?","Our first date place?",
+"What do you love most about me?","Our dream destination?",
+"When did you realize you love me?","My nickname for you?",
+"Our cutest memory?","Your favourite photo of us?",
+"What makes you smile about me?","What song reminds you of me?",
+"What do you miss when I'm away?","What makes our love special?",
+"What promise will you give me?","What makes you jealous?",
+"When do you feel closest to me?","What is your favourite hug memory?",
+"What future do you see with me?","What do you want to say right now?",
+"Why will you never leave me?"
+]
+
+let qi=0
+let answers=JSON.parse(localStorage.getItem("Heart Test"))||Array(20).fill("")
+
+function openTask1(){show(task1);displayQ()}
+function displayQ(){qText.innerText=(qi+1)+". "+questions[qi];qAns.value=answers[qi]}
+function nextQ(){answers[qi]=qAns.value;localStorage.setItem("Heart Test",JSON.stringify(answers));if(qi<19){qi++;displayQ()}else alert("All answers saved 💙")}
+function prevQ(){answers[qi]=qAns.value;localStorage.setItem("Heart Test",JSON.stringify(answers));if(qi>0){qi--;displayQ()}}
+
+/* TASK2 */
+const msgs=["💞Always you ❤️ You are my happiness 💙 Love you endlessly 💞","💖 You are my everything 💞 My world 🌍My heart is yours 💗"," Forever mine 💍💗 You complete me💖 Just you,always💞","❤️ I thank life every day for giving me you 💝","💞 My heart chose you once and will choose you forever💗", "💓No matter where life takes me, my heart belongs to you 💞","💞 Happy Birthday to the one who owns my heart completely 💖","My soul is yours💞My forever person💗 You are my mine💙","My favorite person in the world💍 Life is better with you💗 I am lucky to have you💞"]
+for(let i=0;i<msgs.length;i++){
+let b=document.createElement("div")
+b.className="mystery-box"
+b.innerHTML="💌"
+b.onclick=()=>{b.classList.add("opened");b.innerHTML=msgs[i]}
+grid.appendChild(b)
+}
+
+
+
+
+/* TASK3 — One by one slow flying balloons & gifts */
+function openTask3(){
+
+  show(task3)   // ✅ FIXED (string remove)
+
+  balloonMsg.innerText = ""   // clear old text
+
+  const messages=[
+  "You are my forever 💙",
+  "My heart belongs only to you 💞",
+  "I love you more every day 💖",
+  "You are my dream come true 💫",
+  "My world starts and ends with you 🌍",
+  "I am lucky to have you 💗",
+  "You are my peace 💙",
+  "My soul found home in you 🏡",
+  "I fall for you again and again 💓",
+  "You are my everything 💕",
+  "With you, life feels magical ✨",
+  "Your love is my strength 💪💖",
+  "I choose you forever 💍",
+  "You complete my heart 💞",
+  "My happiest moments are with you 😊",
+  "You are my safe place 💙",
+  "I can’t imagine life without you 💖",
+  "You make my world beautiful 🌸",
+  "My love for you never fades 💗",
+  "I am yours forever 💘"
+  ]
+
+  let msgIndex=0
+  let created=0
+
+  function createFlyItem(){
+
+    if(created >= 20) return
+
+    let emoji = created < 10 ? "🎈" : "🎁"
+
+    let item=document.createElement("div")
+    item.className="balloon"
+    item.innerHTML=emoji
+
+    item.style.fontSize="120px"
+    item.style.left=Math.random()*90+"vw"
+    item.style.animationDuration="20s"
+
+    item.onclick=()=>{
+      item.remove()
+      if(msgIndex < messages.length){
+        balloonMsg.innerText = messages[msgIndex]
+        msgIndex++
+      }
+    }
+
+    task3.appendChild(item)   // ✅ FIXED (body → task4)
+
+    created++
+    setTimeout(createFlyItem,2000)
+  }
+
+  createFlyItem()
+}
+
+
+
+function openVideo(){
+
+  bgMusic.pause()
+
+  show(task4)
+
+  let video=document.getElementById("video")
+  video.currentTime=0
+  video.play()
+}
+
+function backToTasks(){
+
+  let video=document.getElementById("video")
+
+  video.pause()
+  video.currentTime=0
+
+  bgMusic.play()
+
+  show(tasks)
+}
+ 
+
+let rec;
+let chunks=[];
+
+async function startRec(){
+
+  chunks=[];
+
+  let stream = await navigator.mediaDevices.getUserMedia({audio:true});
+
+  rec = new MediaRecorder(stream);
+
+  rec.ondataavailable = e=>{
+    chunks.push(e.data);
+  };
+
+  rec.onstop = ()=>{
+
+    let blob = new Blob(chunks,{type:'audio/webm'});
+
+    let reader = new FileReader();
+
+    reader.readAsDataURL(blob);
+
+    reader.onloadend = function(){
+
+      let base64data = reader.result;
+
+      // 💾 Save permanently
+      localStorage.setItem("savedVoice", base64data);
+
+      document.getElementById("playAudio").src = base64data;
+    };
+  };
+
+  rec.start();
+}
+
+function stopRec(){
+  rec.stop();
+}
+
+/* 🔄 Load saved audio automatically */
+window.addEventListener("load", function(){
+
+  let saved = localStorage.getItem("savedVoice");
+
+  if(saved){
+    document.getElementById("playAudio").src = saved;
+  }
+});
+
+/* ⬅ Back Button Function */
+function backToTasks6(){
+
+  let audio=document.getElementById("playAudio");
+
+  audio.pause();
+
+  show(tasks);
+}
+
+
+function show(sec){
+
+document.querySelectorAll(".section").forEach(s=>{
+s.classList.remove("active")
+})
+
+if(typeof sec === "string"){
+document.getElementById(sec).classList.add("active")
+}else{
+sec.classList.add("active")
+}
+
+}
+
+function openTask6(){
+
+  show("task6")
+
+  document.getElementById("lines").innerText = `
+🫶💞Happy Birthday Uyireyy🫂😘😇 
+
+❣️Nee en life la vandhadhu coincidence illa… adhu en fate nu naan namburen💖👀Un kannu la naan paakara love… adhu dhaan en world nu namburan 🌏👩‍❤️‍👨Nee en kooda irundha podhum, world full against ah irundhalum naan strong ah irukan pattu 🫶✨En future pathi yosikumbodhu, en pakkathula nee illana athu future ehh illa🫤 ...💜🤩Un mela iruka love temporary illa… lifetime commitment da pattu ma 🫂😘 😇Naan un kitta fight pannalum unai vida mudiyadhu… nee en habit illa, nee en life da chello 💯😌Love na feel panna maari illa… un kooda iruka podhu dhaan love enna nu puriyudhu🥹💓Un kooda sandai potalum, last la unta thaan na varuvan chlm 😘 enaku enna aanaalum parava illa… nee en kooda irundha podhum, adhu dhaan en happiness🥰Nee en future la illa na, en dreams ellam meaning illama poidum ena ethukagavum vitu poitatha thangoo 😘 ni vita Matta nu therium da nanum una vitu poita mattan entha situation laium 🫂🫶😇Un kooda irukurathu than en perfect life 🧬 💙💋💜
+
+
+💙அவனுள் ஆயிரம் வலிகள் இருந்தாலும் என்னிடம் அவன் காட்டுவது அன்பு மட்டுமே 💜🫂
+பேசினாலும் சண்டை 💖, பேசாவிட்டாலும் சண்டை💓, சொன்னாலும் சண்டை 💗,சொல்லாவிட்டாலும் சண்டை💞, கவனித்தாலும் சண்டை💕 ,கவனிக்காவிட்டாலும் சண்டை💘 இப்படி எதற்கெடுத்தாலும் சண்டையிட முடியும் என்றால் ?🩷அது என்னவனால் மட்டுமே முடியும் 😂💙
+>>> மற்றவர்கள் தொலைத்த பொக்கிஷம் அவன்✨நான் தேடாமல் கிடைத்த வைரம் அவன் 💎😍தெரியாமல் கூட தொலைத்து விட மாட்டேன்🫶🤝 
+Unakkum enakkum nandragave kadhalikka therinthu irukirathu ♥️ana Enna oruvarai oruvar kayapatuthamal irukathan theriyavillai na unai hurt panniruntha sorry chlm 😘🥺
+
+🫶💞நாளுக்கு நாள் உன் மீது வைத்திருக்கும் காதல் அதிகரித்து வருகிறது என்னவனே 💙💜
+
+💗Unna lose panniduvean nu yosichi kuta enala paka mudiyathu da avlo pudikum una 🥹
+💕Enaku love na feel illa… adhu nee. Nee illana love kuda illa💔Namma rendu perum serndhu iruka varai dhaan en heart calm ah irukum… illana adhu restless🥺Nee santhoshama irundha podhum… adhu dhaan enaku romba mukkiyam, even naan kashtapattalum parava illa epavummey nii happy ya irukanum da chlm 🥹😘
+
+>> Enga v2 la ena evlo time pudikatha visayathuku force pannalum நாளுக்கு நாள் உன்மீது உள்ள காதல் அதிகரித்து தான் வருகிறது chello 😘 🫂 thank u for giving to my life unakulla evlo kaistam irunthalum yenta pesurapo love than kamika I'm lucky girl in the world 🌍 🥹maru jenmam edutha kuta uyire un karam pidipeney 🤝🫶😘 அன்று உன்னை காதலித்த விடக்கூடாது என்று நினைத்த என்னை தான் இன்று உன்னைத் தவிர வேற யாரும் வேண்டாம் என்று நினைக்க வைத்து விட்டாய் 💙😇
+
+❣️You are not just my favourite person😇 you are my happiness🥰 strength 💪weakness✨ and my everything🌎 chello love you lots chello 😘 na honest ahh vey irukan una thavara vera yarum venamunu💯kaistamoo ..nastamoo ..santhosamoo ..
+sokamo ..kadaisila enakunu irukurathu nii mattum than da chello 😘 🫂 பிரம்மாண்ட காலம் நீ தந்து சென்றாய் என் நாட்கள் தீர்ந்தது 🌻💙Natanthathu ..Natakurathu ..Natakka povathu ellam nambikaiye இந்த காதல் உனக்காக என்றும் தீராது....🥹🌹💜
+
+<<< காலம் முடியலாம் ஆனால் காதல் முடியுமா 🌹👨‍❤️‍💋‍👨 Mathavangaluku epdiyo ...😏Ana enaku avan "அழகன்" Thanga😍 Nan Rasipatharkagavey padaikkappattavan "என்னவன்" 💙✨🥰 I always hurt you but trust me I love you more than anything 😇💙Where there is love, there is life😇Love is the beauty of the soul 🌹So, I love you because the entire universe conspired to help me find you 💙
+
+
+`;
+}
+
+
+
+/* TASK7 */
+let blown=0
+function blow(num){
+let candles=document.querySelectorAll(".candle")
+if(candles[num-1].innerHTML=="💨") return
+candles[num-1].innerHTML="💨"
+blown++
+if(blown==3){let msg=document.getElementById("bdayMsg"); msg.style.display="block"; msg.innerHTML="🎉 Happy Birthday My Life 💙"; launchSurprise()}}
+
+function launchSurprise(){
+let emojis=["🎈","🌸","🌺","🌷","🎈","💐"]
+for(let i=0;i<40;i++){
+let item=document.createElement("div"); item.className="fly"; item.innerHTML=emojis[Math.floor(Math.random()*emojis.length)]; item.style.left=Math.random()*100+"vw"; item.style.animationDuration=(3+Math.random()*2)+"s"; document.body.appendChild(item); setTimeout(()=>item.remove(),5000)
+}}
+
+
+
+
+/* HEARTS */
+setInterval(()=>{
+let h=document.createElement("div")
+h.className="heart"
+h.innerHTML="💙"
+h.style.left=Math.random()*100+"vw"
+document.body.appendChild(h)
+setTimeout(()=>h.remove(),6000)
+},400)
+
+</script>
+</body>
+</html>
